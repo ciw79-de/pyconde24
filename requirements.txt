@@ -1,0 +1,9 @@
+duckdb
+faker
+flet
+hypothesis
+pydantic
+pytest
+pytest-faker
+ruff
+ycecream
