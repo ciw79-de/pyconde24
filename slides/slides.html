@@ -8,12 +8,24 @@
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
       @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
 
-      body { font-family: 'Droid Serif'; font-size: 24;}
+      body { font-family: 'Yanone Kaffeesatz'; font-size: 24;}
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
       .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      /* Two-column layouts */
+      .left-column  { width: 49%; float: left; }
+      .right-column { width: 49%; float: right; }
+
+      .left-column-33  { width: 33%; float: left; }
+      .right-column-66 { width: 66%; float: right; }
+
+      .left-column-66  { width: 66%; float: left; }
+      .right-column-33 { width: 33%; float: right; }
+
+      .right-column ~ p { clear: both; }
+      .right-column ~ ul { clear: both; }
     </style>
   </head>
   <body>
@@ -44,14 +56,30 @@
       
       ---
       
-      # Testing
-      ## [faker](https://faker.readthedocs.io/en/stable/)
-      Dummy data: e.g. 'address', 'am_pm', 'android_platform_token', 'ascii_company_email', 'bank_country', 'binary', 'boolean', 'building_number', 'century', 'city', 'color', 'coordinate', 'country', 'country_calling_code', 'credit_card_full', 'cryptocurrency', 'csv', 'currency', 'date', 'del_arguments', 'domain_name', 'domain_word', 'ean8', 'email', 'emoji', 'enum', 'factories', 'file_extension', 'file_name', 'file_path', 'first_name_nonbinary', 'format', 'hex_color', 'hostname', 'http_status_code', 'iban', 'image', 'image_url', 'ipv6', 'isbn13', 'iso8601',  'job', 'json', 'json_bytes', 'language_code', 'language_name', 'last_name', 'latitude', 'longitude', 'mac_address', 'md5', 'mime_type', 'name', 'optional', 'parse', 'passport_full', 'password', 'past_date', 'past_datetime', 'phone_number', 'port_number', 'prefix', 'pricetag', 'profile', 'random', 'rgb_color', 'seed', 'sentence', 'sha1', 'sha256', 'simple_profile', 'state', 'street_name', 'swift', 'tar', 'text', 'texts', 'time', 'timezone', 'unique', 'unix_device', 'unix_partition', 'url', 'user_agent', 'user_name', 'uuid4', 'weights', 'windows_platform_token', 'words', 'xml', 'zipcode'
-      
-      ```python
+      # Testing: [faker](https://faker.readthedocs.io/en/stable/)
+
+      .left-column-66[
+        ```python
         from faker import Faker
-        fake = Faker(['it_IT', 'en_US', 'ja_JP'])
-      ```
+        fake = Faker(['ru_RU', 'en_US', 'ja_JP'])
+        for _ in range(10):
+            print(fake.name())
+
+        Alison Pham
+        井上 七夏
+        Сорокин Ратмир Гордеевич
+        Прасковья Юльевна Котова
+        橋本 直子
+        Логинов Потап Иосипович
+        Kara Dunn
+        Scott Jackson
+        佐藤 太郎
+        西村 結衣
+        ```
+      ]
+      ### Dummy data
+      e.g. 'address', 'am_pm', 'android_platform_token', 'ascii_company_email', 'bank_country', 'binary', 'boolean', 'building_number', 'century', 'city', 'color', 'coordinate', 'country', 'country_calling_code', 'credit_card_full', 'cryptocurrency', 'csv', 'currency', 'date', 'del_arguments', 'domain_name', 'domain_word', 'ean8', 'email', 'emoji', 'enum', 'factories', 'file_extension', 'file_name', 'file_path', 'first_name_nonbinary', 'format', 'hex_color', 'hostname', 'http_status_code', 'iban', 'image', 'image_url', 'ipv6', 'isbn13', 'iso8601',  'job', 'json', 'json_bytes', 'language_code', 'language_name', 'last_name', 'latitude', 'longitude', 'mac_address', 'md5', 'mime_type', 'name', 'optional', 'parse', 'passport_full', 'password', 'past_date', 'past_datetime', 'phone_number', 'port_number', 'prefix', 'pricetag', 'profile', 'random', 'rgb_color', 'seed', 'sentence', 'sha1', 'sha256', 'simple_profile', 'state', 'street_name', 'swift', 'tar', 'text', 'texts', 'time', 'timezone', 'unique', 'unix_device', 'unix_partition', 'url', 'user_agent', 'user_name', 'uuid4', 'weights', 'windows_platform_token', 'words', 'xml', 'zipcode'
+      
 
       ???
 
@@ -89,6 +117,15 @@
       
       [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/PRH3QU/resources/Threat_Modeling_for_Python_Developers_-_6b2J1mQ.pdf)
       
+      .footnote[.red.bold[*] Opening bracket: &amp;#91;]
+
+      .footnote[.red.bold[*]
+      Important footnote]
+
+      .footnote[
+      .red.bold[
+      *]Important footnote]
+      
 
       ---
       
@@ -123,7 +160,9 @@
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
     </script>
     <script>
-      var slideshow = remark.create();
+      var slideshow = remark.create({
+        highlightLines: 'true',
+      });
     </script>
   </body>
 </html>
