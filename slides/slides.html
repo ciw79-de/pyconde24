@@ -17,8 +17,12 @@
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
-      h2, h3 {
+      h1 {
         margin-top: 0px;
+        margin-bottom: 0px;
+      }
+      h2, h3 {
+        margin-top: 20px;
         margin-bottom: 0px;
       }
       .remark-code, .remark-inline-code {
@@ -26,7 +30,7 @@
         margin-top: 0px;
       }
       .remark-slide-content > h1:first-of-type {
-        margin-top: 0px;
+        margin-top: 20px;
        /* margin-bottom: 0px; */
       }
       /* Two-column layouts */
@@ -149,36 +153,71 @@
       .right-column[
 
       ```python
-      from hypothesis import given
+      from hypothesis import given, settings
       from hypothesis.strategies import text
 
 
+      @settings(max_examples=500)
       @given(text())
       @example("")
       def test_decode_inverts_encode(s):
       assert decode(encode(s)) == s
       ```
-      - [Docs](https://hypothesis.readthedocs.io/en/latest/)
-      - [Ghostwriting tests](https://hypothesis.readthedocs.io/en/latest/ghostwriter.html)
       ]
 
+      - [Docs](https://hypothesis.readthedocs.io/en/latest/)
+      - [Ghostwriting tests](https://hypothesis.readthedocs.io/en/latest/ghostwriter.html)
 
       ---
 
       # [devcontainers](https://pretalx.com/pyconde-pydata-2024/talk/UG8THG/)
 
-      * Reproducable dev environment (including IDE config and plugin)
-      * Not limited to Visual Studio Code
-      * Support by github code spaces
+      - Reproducable dev environment (including IDE config and plugin)
+      - Not limited to Visual Studio Code
+      - Support by github code spaces
 
       ---
 
       # Security
 
-      ## Vulnerabilities
+      ## bandit
+      - Analyse source code for vulnerabilities
+      ```python
+      >> Issue: [B608:hardcoded_sql_expressions] Possible SQL injection vector through string-based query construction.
+      Severity: Medium   Confidence: Medium
+      CWE: CWE-89 (https://cwe.mitre.org/data/definitions/89.html)
+      More Info: https://bandit.readthedocs.io/en/1.7.8/plugins/b608_hardcoded_sql_expressions.html
+      Location: src/bloomberg/bxfm/database/testDb.py:163:19
+      162         print(row)
+      163         cursor.execute(f"SELECT count(*) FROM {table}", {})
+      164         print(cursor.fetchone())
+      ```
+      ```python
+      >> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'POSTGRESQL_BXFMDB_PASSWORD_OP2'
+        Severity: Low   Confidence: Medium
+        CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+        More Info: https://bandit.readthedocs.io/en/1.7.8/plugins/b105_hardcoded_password_string.html
+        Location: src/bloomberg/bxfm/database/dbBxfmConfig.py:54:37
+      53      KEY_POSTGRESQL_BXFMDB_PASSWORD_OP1 = "POSTGRESQL_BXFMDB_PASSWORD_OP1"
+      54      KEY_POSTGRESQL_BXFMDB_PASSWORD_OP2 = "POSTGRESQL_BXFMDB_PASSWORD_OP2"
+      ```
+      - [Docs](https://bandit.readthedocs.io/en/latest/man/bandit.html)
 
-      * bandit
-      * GuardDog
+      ---
+
+      ## GuardDog
+      - Analyse dependencies for vulnerabilities
+
+      ```python
+      $ python3.12 -m guarddog pypi scan src
+      Found 0 potentially malicious indicators scanning src
+
+      Some rules failed to run while scanning src:
+
+      * download-package: HTTPSConnectionPool(host='pypi.org', port=443): Max retries exceeded with url: /pypi/src/json (Caused by SSLError(SSLCertVerificationError(1, '[SSL: CERTIFICATE_VERIFY_FAILED] certificate verify failed: self signed certificate in certificate chain (_ssl.c:1000)')))
+      ```
+      - ...
+      - [Docs]()
 
       ---
 
@@ -198,7 +237,7 @@
 
       # [Cross-platform UI frameworks](https://pretalx.com/pyconde-pydata-2024/talk/W7YDRX/)
 
-      * Comparision of Kivy, PySide6, Flet (for Android)
+      - Comparision of Kivy, PySide6, Flet (for Android)
 
       ![How to threat model?](images/ui_frameworks_comparison.jpg)
 
@@ -206,17 +245,18 @@
 
       # [Coding with kids](https://pretalx.com/pyconde-pydata-2024/talk/UBNVYW/)
 
-      * ### Algorithmic thinking
-      * ### Child-friendly robots
-      * ### Visual programming
-      * ### Textual programming
+      - ### Algorithmic thinking
+      - ### Child-friendly robots
+      - ### Visual programming
+      - ### Textual programming
 
       [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/UBNVYW/resources/when_and_how_to_start_coding_with_kids__ih5Hje5.pdf)
       ---
 
       # etc
-      * [SQLAlchemy](https://www.sqlalchemy.org/) The Python SQL Toolkit and Object Relational Mapper
-      * [icecream](https://github.com/gruns/icecream) or [ycecream](https://github.com/salabim/ycecream) to simplify scripting or debugging
+      - [ruff](https://docs.astral.sh/ruff/) Python linter and formatter (Replacing isort, black, flake8, pylint)
+      - [SQLAlchemy](https://www.sqlalchemy.org/) The Python SQL Toolkit and Object Relational Mapper
+      - [icecream](https://github.com/gruns/icecream) or [ycecream](https://github.com/salabim/ycecream) to simplify scripting or debugging
       ---
 
       # Presentation tool
