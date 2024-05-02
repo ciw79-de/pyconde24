@@ -1,6 +1,8 @@
+bandit
 duckdb
 faker
 flet
+guarddog
 hypothesis
 pydantic
 pytest
