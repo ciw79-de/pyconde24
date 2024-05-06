@@ -57,11 +57,12 @@
 
       ???
       - General motivation for pycon.de
+      - Not comparable to dedicated training
+      - Individual choice how a conference is spent: Talks vs. conversations vs. workshops vs. combination of those three
 
       ---
 
       # [sys.monitoring](https://pretalx.com/pyconde-pydata-2024/talk/P7AG9A/) (New in version 3.12.)
-
 
       ## Tool
       ```python
@@ -122,13 +123,13 @@
 
       ---
 
-      # Testing: [faker](https://faker.readthedocs.io/en/stable/)
+      # Test data with [faker](https://faker.readthedocs.io/en/stable/)
 
       .left-column-66[
         ```python
         from faker import Faker
         fake = Faker(['ru_RU', 'en_US', 'ja_JP'])
-        for _ in range(10):
+        for _u in range(10):
             print(fake.name())
 
         Alison Pham
@@ -149,7 +150,7 @@
 
       ???
 
-      Shorten examples
+      Shortened examples
 
       ---
 
@@ -196,18 +197,35 @@
       def test_decode_inverts_encode(s):
       assert decode(encode(s)) == s
       ```
+
+      ```python
+      from hypothesis import example, given, settings
+      from hypothesis.strategies import integers
+
+      def broken_sum(a: int, b: int) -> int:
+        wrong_case = 3
+        if a == wrong_case or b == wrong_case:
+            return 0
+        return a + b
+
+      @settings(
+        max_examples=50000,
+        report_multiple_bugs=True,
+        print_blob=True)
+      @given(integers(), integers())
+      @example(1, 1)
+      def test_broken_sum(a, b):
+          assert broken_sum(a, b) == a + b
+      ```
       ]
 
       - [Docs](https://hypothesis.readthedocs.io/en/latest/)
       - [Ghostwriting tests](https://hypothesis.readthedocs.io/en/latest/ghostwriter.html)
 
-      ---
+      ???
 
-      # [devcontainers](https://pretalx.com/pyconde-pydata-2024/talk/UG8THG/)
-
-      - Reproducable dev environment (including IDE config and plugin)
-      - Not limited to Visual Studio Code
-      - Support by github code spaces
+      - hypothesis creates test case by 1. explicitely defined test case,
+      2. previous failing
 
       ---
 
@@ -252,6 +270,11 @@
       - ...
       - [Docs]()
 
+      ???
+
+      - Didn't work in BB environment
+      - Steffen got some errors on his private python project
+
       ---
 
       ## [Threat modelling](https://pretalx.com/pyconde-pydata-2024/talk/PRH3QU/)
@@ -259,6 +282,17 @@
       ![How to threat model?](images/how_to_threat_model.JPG)
 
       [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/PRH3QU/resources/Threat_Modeling_for_Python_Developers_-_6b2J1mQ.pdf)
+
+      ???
+
+      - Software Security Engineer working in a normal team
+      ## Avoid
+      - Digging too deep
+      - Using sophististicated tools
+      - Forgetting human targets
+      - Thinking too early about migitations
+      - Working too isolated
+      - No threat modeling at all
 
       ---
 
@@ -367,18 +401,53 @@
 
       # [Coding with kids](https://pretalx.com/pyconde-pydata-2024/talk/UBNVYW/)
 
-      - ### Algorithmic thinking
-      - ### Child-friendly robots
-      - ### Visual programming
-      - ### Textual programming
+      ## Learning steps
+      - Algorithmic thinking
+      - Child-friendly robots
+      - Visual programming
+      - Textual programming
+
+      ## Teaching steps
+      - Multiple short sessions
+      - Active recall
+      - Patience
+      - Encourage your child
+      - Learn together
 
       [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/UBNVYW/resources/when_and_how_to_start_coding_with_kids__ih5Hje5.pdf)
       ---
 
+      # [devcontainers](https://pretalx.com/pyconde-pydata-2024/talk/UG8THG/)
+
+      - Reproducable dev environment (including IDE config and plugin)
+      - Not limited to Visual Studio Code
+      - Supported by github code spaces
+
       # etc
-      - [ruff](https://docs.astral.sh/ruff/) Python linter and formatter (Replacing isort, black, flake8, pylint)
-      - [SQLAlchemy](https://www.sqlalchemy.org/) The Python SQL Toolkit and Object Relational Mapper
-      - [icecream](https://github.com/gruns/icecream) or [ycecream](https://github.com/salabim/ycecream) to simplify scripting or debugging
+      - [ruff](https://docs.astral.sh/ruff/): Python linter and formatter (Replacing isort, black, flake8, pylint)
+      - [SQLAlchemy](https://www.sqlalchemy.org/): The Python SQL Toolkit and Object Relational Mapper
+      - [icecream](https://github.com/gruns/icecream) or [ycecream](https://github.com/salabim/ycecream): to simplify scripting or debugging
+
+      ```python
+      from icecream import ic
+
+      def foo(i):
+          return i + 333
+
+      ic(foo(123))  # ic| foo(123): 456
+
+      d = {'key': {1: 'one'}}
+
+      ic(d['key'][1])  # ic| d['key'][1]: 'one'
+
+      class klass():
+          attr = 'yep'
+
+      ic(klass.attr)  # ic| klass.attr: 'yep'
+      ```
+
+      ???
+      - Possible to define multiple devcontainers in one repo
       ---
 
       count: false
