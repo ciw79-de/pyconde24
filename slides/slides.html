@@ -58,7 +58,7 @@
       ???
       - General motivation for pycon.de
       - Not comparable to dedicated training
-      - Individual choice how a conference is spent: Talks vs. conversations vs. workshops vs. combination of those three
+      - Individual choice how a conference is spent: Talks vs. conversations vs. workshops vs. opinions vs. combination of those four
 
       ---
 
@@ -84,6 +84,12 @@
       ```
 
       [Python docs](https://docs.python.org/3/library/sys.monitoring.html)
+
+      ???
+
+      Old approach:
+      Sys.-getframe()
+      sys.settrace()
 
       ---
 
@@ -147,10 +153,12 @@
       ### Dummy data
       e.g. 'address', 'am_pm', 'android_platform_token', 'ascii_company_email', 'bank_country', 'binary', 'boolean', 'building_number', 'century', 'city', 'color', 'coordinate', 'country', 'country_calling_code', 'credit_card_full', 'cryptocurrency', 'csv', 'currency', 'date', 'del_arguments', 'domain_name', 'domain_word', 'ean8', 'email', 'emoji', 'enum', 'factories', 'file_extension', 'file_name', 'file_path', 'first_name_nonbinary', 'format', 'hex_color', 'hostname', 'http_status_code', 'iban', 'image', 'image_url', 'ipv6', 'isbn13', 'iso8601',  'job', 'json', 'json_bytes', 'language_code', 'language_name', 'last_name', 'latitude', 'longitude', 'mac_address', 'md5', 'mime_type', 'name', 'optional', 'parse', 'passport_full', 'password', 'past_date', 'past_datetime', 'phone_number', 'port_number', 'prefix', 'pricetag', 'profile', 'random', 'rgb_color', 'seed', 'sentence', 'sha1', 'sha256', 'simple_profile', 'state', 'street_name', 'swift', 'tar', 'text', 'texts', 'time', 'timezone', 'unique', 'unix_device', 'unix_partition', 'url', 'user_agent', 'user_name', 'uuid4', 'weights', 'windows_platform_token', 'words', 'xml', 'zipcode'
 
+      [Talk](https://pretalx.com/pyconde-pydata-2024/talk/PVLTD3/ )
 
       ???
 
-      Shortened examples
+      - Shortened examples
+      - Talk was about different kind of software tests
 
       ---
 
@@ -190,7 +198,6 @@
       from hypothesis import given, settings
       from hypothesis.strategies import text
 
-
       @settings(max_examples=500)
       @given(text())
       @example("")
@@ -210,8 +217,7 @@
 
       @settings(
         max_examples=50000,
-        report_multiple_bugs=True,
-        print_blob=True)
+        report_multiple_bugs=True)
       @given(integers(), integers())
       @example(1, 1)
       def test_broken_sum(a, b):
@@ -369,16 +375,16 @@
       .right-column[
       - Constraints
       ```python
-      #: Time of the day, in the format ``HH:MM``. PYTHON
+      #: Time of the day, in the format ``HH:MM``
       TimeOfDay = constr(regex=r'\d\d:\d\d')
       #: Port number
       Port = conint(ge=1, le=65535)
       ```
-      - BaseSettings
+      - BaseSettings (considers env variables)
       - Transformations (via validators)
         * Fallbacks
       ```python
-      @validator('port', always=True) PYTHON
+      @validator('port', always=True)
       def fallback_sender_port(cls, v, values):
         if (not v and 'sender' in values)):
         return values['sender'].port
@@ -388,6 +394,10 @@
         * Deprecation warnings
       - Default dumping (e.g. yaml)
       ]
+
+      ???
+
+      BaseSettings will try to fill undefined values from the environment
 
       ---
 
@@ -415,6 +425,10 @@
       - Learn together
 
       [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/UBNVYW/resources/when_and_how_to_start_coding_with_kids__ih5Hje5.pdf)
+
+      ???
+
+      Interesting because my daughter was asking me how programming works
       ---
 
       # [devcontainers](https://pretalx.com/pyconde-pydata-2024/talk/UG8THG/)
