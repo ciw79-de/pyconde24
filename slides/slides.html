@@ -51,8 +51,12 @@
     <textarea id="source">
 
       class: center, middle
+      name: title
 
       # pycon.de 2024 - short recap
+
+      ???
+      - General motivation for pycon.de
 
       ---
 
@@ -84,8 +88,37 @@
 
       # [duckdb](https://pretalx.com/pyconde-pydata-2024/talk/HKFN8J/)
 
-      - sql
+      - persistent vs. in-memory database
+      - supporting csv, parquet, json
+      - hive partitioning (files are created based on partitioning keys)
+      ```
+      orders
+      ├── year=2021
+      │ ├── month=1
+      │ │ ├── file1.parquet
+      │ │ └── file2.parquet
+      │ └── month=2
+      │ └── file3.parquet
+      └── year=2022
+      ├── month=11
+      │ ├── file4.parquet
+      │ └── file5.parquet
+      └── month=12
+      └── file6.parquet
+      ```
+      - Java + Python APIs
+      - sql query
       - [hive partitioning](https://duckdb.org/docs/data/partitioning/hive_partitioning)
+
+      ## but
+      - no concurrent access
+
+      ???
+
+      ### First optimistic approach: solutions to all our problems
+      - SQL queries - reuse current implementation (multiple files can be inquired at once)
+      - Data can resist on any file/cloud share
+      - Data could be split by file or in even smaller chunks
 
       ---
 
@@ -137,7 +170,7 @@
                 prev = character
             else:
                 count += 1
-        entry = (character, count)
+      * entry = (character, count)
         lst.append(entry)
         return lst
 
@@ -231,7 +264,96 @@
 
       # [pydantic](https://pretalx.com/pyconde-pydata-2024/talk/RGWDCN/)
 
+      ## Problems
+      - Defaults
+      - Fallbacks
+      - Validation
+
+      ```python
+      DEFAULT_SENDER_ENABLED = False PYTHON
+      DEFAULT_SENDER_PORT = 80
+
+      config = {
+        'sender_enabled': True,
+        'sender': {'host': 'example.org', 'port': 80}
+        'receiver_enabled': True,
+        'receiver': {'port': 1337},
+        'license_key': 'fsf89sdf98s9dff0ssdf09fs'
+      }
+
+      if config.get('sender_enabled', DEFAULT_SENDER_ENABLED):  # Default
+          sender_port = config.get('sender', {}).get('port', DEFAULT_SENDER_PORT)
+          logging.info(f"sender enabled on port {sender_port}")
+      if config.get('receiver_enabled', DEFAULT_RECEIVER_ENABLED):  # Fallback
+          receiver_port = (config.get('receiver', {})
+              .get('port', (config.get('sender', {})
+                  .get('port', DEFAULT_RECEIVER_PORT)))
+      ```
+
       [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/RGWDCN/resources/pycon-2024_robust-configuration-managem_F8cgdIW.pdf)
+
+      ---
+
+      # [pydantic](https://pretalx.com/pyconde-pydata-2024/talk/RGWDCN/)
+
+      .left-column[
+      ```python
+      external_data = {
+        'sender': {'host': 'example.org'},
+        'receiver_enabled': True,
+        'receiver': {'port': 1337},
+        'license_key': 'fsf89sdf98s9dff0ssdf09fs'
+       }
+
+      from pydantic import BaseModel
+      class SenderConfig(BaseModel):
+          host: str
+          port: int = 80
+      class ReceiverConfig(BaseModel):
+          port: int
+      class Config(BaseModel):
+          sender_enabled: bool = True
+          sender: SenderConfig
+          receiver_enabled: bool = False
+          receiver: Optional[ReceiverConfig] = None
+          license_key: str
+      config = Config(**external_data)
+      ```
+
+      ```shell
+      Config(sender_enabled=True,
+        sender=SenderConfig(host="example.org"
+        port=80),
+        receiver_enabled=True,
+        receiver=ReceiverConfig(port=1337),
+        license_key="fsf89sdf98s9dff0ssdf09fs")
+      ```
+
+      [Slides](https://pretalx.com/media/pyconde-pydata-2024/submissions/RGWDCN/resources/pycon-2024_robust-configuration-managem_F8cgdIW.pdf)
+      ]
+
+      .right-column[
+      - Constraints
+      ```python
+      #: Time of the day, in the format ``HH:MM``. PYTHON
+      TimeOfDay = constr(regex=r'\d\d:\d\d')
+      #: Port number
+      Port = conint(ge=1, le=65535)
+      ```
+      - BaseSettings
+      - Transformations (via validators)
+        * Fallbacks
+      ```python
+      @validator('port', always=True) PYTHON
+      def fallback_sender_port(cls, v, values):
+        if (not v and 'sender' in values)):
+        return values['sender'].port
+        return v
+      ```
+        * Dynamic values
+        * Deprecation warnings
+      - Default dumping (e.g. yaml)
+      ]
 
       ---
 
@@ -259,9 +381,11 @@
       - [icecream](https://github.com/gruns/icecream) or [ycecream](https://github.com/salabim/ycecream) to simplify scripting or debugging
       ---
 
+      count: false
+
       # Presentation tool
-      https://github.com/gnab/remark/wiki/Configuration#highlighting
-      https://github.com/gnab/remark/wiki#external-markdown
+      - https://github.com/gnab/remark/wiki/Configuration#highlighting
+      - https://github.com/gnab/remark/wiki#external-markdown
 
     </textarea>
     <script src="https://remarkjs.com/downloads/remark-latest.min.js">
