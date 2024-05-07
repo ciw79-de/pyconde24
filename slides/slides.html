@@ -59,6 +59,7 @@
       - General motivation for pycon.de - freedom of choice
       - Not comparable to dedicated training
       - Individual choice how a conference is spent: Talks vs. conversations vs. workshops vs. opinions vs. combination of those four
+      - Nearly no in-depth talks - usually starter, occasionally intermediate level
 
       ---
 
@@ -82,6 +83,8 @@
       sys.monitoring.register_callback(
           tool_id: int, event: int, func: Callable | None, /) → Callable | None
       ```
+
+      [PEP 669](https://peps.python.org/pep-0669/)
 
       [Python docs](https://docs.python.org/3/library/sys.monitoring.html)
 
@@ -118,7 +121,7 @@
       └── file6.parquet
       ```
       - Java + Python APIs
-      - sql query
+      - sql support
       - [hive partitioning](https://duckdb.org/docs/data/partitioning/hive_partitioning)
 
       ## but
@@ -164,6 +167,7 @@
 
       - Shortened examples
       - Talk was about different kind of software tests
+      - Introduces certain kind of randomness in the test cases
 
       ---
 
@@ -215,8 +219,8 @@
       from hypothesis.strategies import integers
 
       def broken_sum(a: int, b: int) -> int:
-        wrong_case = 3
-        if a == wrong_case or b == wrong_case:
+        faulty_case = 3
+        if a == faulty_case or b == faulty_case:
             return 0
         return a + b
 
@@ -235,8 +239,11 @@
 
       ???
 
-      - hypothesis creates test case by 1. explicitely defined test case,
-      2. previous failing
+      - hypothesis creates test case by
+        1. explicitely defined test case,
+        2. previous failing
+        3. corner cases
+        4. random choices
 
       ---
 
@@ -305,7 +312,7 @@
 
       ---
 
-      # [pydantic](https://pretalx.com/pyconde-pydata-2024/talk/RGWDCN/)
+      # Data validation with [pydantic](https://pretalx.com/pyconde-pydata-2024/talk/RGWDCN/)
 
       ## Problems
       - Defaults
